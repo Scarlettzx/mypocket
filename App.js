@@ -4,11 +4,12 @@ import { GlobalStyles } from "./src/constants/styles";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 import AllExpenses from "./src/screens/AllExpenses";
 import RecentExpenses from "./src/screens/RecentExpenses";
 import ManageExpense from "./src/screens/ManageExpense";
+import IconButton from "./src/UI/IconButton";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -16,15 +17,25 @@ const BottomTabs = createBottomTabNavigator();
 function BottomTabsOverview() {
   return (
     <BottomTabs.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         // !กำหนดสี header ทุกหน้า(base)
         headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         // !! (สีตัวอักษร header)
-        headerTintColor: "white",
+        headerTintColor: GlobalStyles.colors.accent500,
         // !สีตรง tabs ด้านล่าง
         tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
-      }}
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="add-circle"
+            size={24}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("ManageExpense");
+            }}
+          />
+        ),
+      })}
     >
       <BottomTabs.Screen
         name="RecentExpenses"
@@ -43,7 +54,7 @@ function BottomTabsOverview() {
         options={{
           title: "All Express",
           tabBarLabel: "All",
-          tabBarIcon: ({ color,size}) =>(
+          tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-calendar-sharp" size={size} color={color} />
           ),
         }}
@@ -57,7 +68,12 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: GlobalStyles.colors.accent500,
+          }}
+        >
           <Stack.Screen
             name="BottomTabsOverview"
             component={BottomTabsOverview}
