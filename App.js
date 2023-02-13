@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import ExpenseContextProvider from "./src/store/expenses-context";
 
 import AllExpenses from "./src/screens/AllExpenses";
 import RecentExpenses from "./src/screens/RecentExpenses";
@@ -65,25 +66,29 @@ function BottomTabsOverview() {
 
 export default function App() {
   return (
+    // ? <> </> => default flex (1)
     <>
       <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-            headerTintColor: GlobalStyles.colors.accent500,
-          }}
-        >
-          <Stack.Screen
-            name="BottomTabsOverview"
-            component={BottomTabsOverview}
-            options={{
-              headerShown: false,
+      {/* ครอบตัว  NavigationContainer เพื่อให้สามารถเรียกใช้ได้เลยจากทุกที่ไม่จำเป็นต้องส่งต่อๆกัน */}
+      <ExpenseContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+              headerTintColor: GlobalStyles.colors.accent500,
             }}
-          />
-          <Stack.Screen name="ManageExpense" component={ManageExpense} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="BottomTabsOverview"
+              component={BottomTabsOverview}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="ManageExpense" component={ManageExpense} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpenseContextProvider>
     </>
   );
 }

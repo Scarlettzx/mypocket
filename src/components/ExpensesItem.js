@@ -2,9 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { GlobalStyles } from "../constants/styles";
 import { useNavigation } from "@react-navigation/native";
-function getForrmattedDate(date) {
-  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-}
+import { getForrmattedDate } from "../util/date";
 
 export default function ExpensesItem({ description, date, amount, id }) {
 
